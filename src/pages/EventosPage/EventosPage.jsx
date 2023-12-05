@@ -329,7 +329,7 @@ function editActionAbort() {
     {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
 
       <MainContent>
-      
+      {console.log(eventos)}
         <section className="cadastro-evento-section">
           <Container>
             <div className="cadastro-evento__box">

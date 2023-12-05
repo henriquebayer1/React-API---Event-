@@ -6,6 +6,8 @@ export const nextEventsResource = '/Evento/ListarProximos'
 export const typeEventResource = '/TiposEvento'
 export const typeEventResourceDelete = '/TiposEvento/'
 export const instituicaoResource = '/Instituicao/'
+export const loginResource = '/Login/'
+export const myEventsResource = '/PresencasEvento/ListarMinhas'
 
 
 

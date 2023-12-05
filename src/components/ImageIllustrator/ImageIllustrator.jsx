@@ -3,6 +3,7 @@ import './ImageIllustrator.css'
 import tipoEventoImage from '../../assets/images/tipo-evento.svg'
 import eventoImage from '../../assets/images/evento.svg'
 import defaultImage from '../../assets/images/default-image.jpeg'
+import loginImage from '../../assets/images/login.svg'
 
 const ImageIllustrator = ({alteText, imageName, addClass}) => {
 
@@ -15,6 +16,9 @@ const ImageIllustrator = ({alteText, imageName, addClass}) => {
             break;
         case 'evento':
             imageResource = eventoImage
+            break;
+        case 'login':
+            imageResource = loginImage
             break;
     
         default:
