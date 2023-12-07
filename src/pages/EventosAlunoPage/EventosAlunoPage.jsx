@@ -7,7 +7,7 @@ import Container from "../../components/Container/Container";
 import { SelectForm } from "../../components/FormComponents/FormComponents";
 import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
-import api from "../../Services/Service";
+import api, { commentaryResource, presencesEventResource } from "../../Services/Service";
 import setNotifyUser from "../../components/Notification/Notification"
 import {
     eventsResource,
@@ -24,6 +24,10 @@ import TableEvA from "./TableEvA/TableEvA";
 
 
 const EventosAlunoPage = () => {
+
+   // recupera os dados globais do usuário
+   const { userData, setUserData } = useContext(UserContext);
+
   // state do menu mobile
   const [exibeNavbar, setExibeNavbar] = useState(false);
   const [eventos, setEventos] = useState([]);
@@ -39,17 +43,43 @@ const EventosAlunoPage = () => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  // recupera os dados globais do usuário
-  const { userData, setUserData } = useContext(UserContext);
-
  
-  useEffect(() => {async function LoadEvent() {
+
+  const verificaPresenca = (arrAllEvents, eventsUser) => {
+
+    for(let x = 0; x < arrAllEvents.length; x++){
+for(let i = 0; i < eventsUser.length; i++) {
+if (arrAllEvents[x].idEvento === eventsUser[i].evento.idEvento) {
+    arrAllEvents[x].situacao = true;
+    arrAllEvents[x].idPresencaEvento = eventsUser[i].idPresencaEvento
+
+    break;
+}
+
+}
+
+    }
+
+return arrAllEvents;
+};
+ 
+  useEffect(() => { LoadEvent() }, [op, userData.userId]);
+  
+   
+  async function LoadEvent() {
+    
     
     if (op === "1") {
       try {
-        const retorno = await api.get(eventsResource)
-        setEventos(retorno.data)
+        const todosOsEventos = await api.get(eventsResource)
+        const meusEventos = await api.get(`${myEventsResource}/${userData.userId}`)
         
+        
+        const eventosMarcados = verificaPresenca(todosOsEventos.data, meusEventos.data)
+        setEventos(eventosMarcados)
+      
+        // console.log("vrebv2geu");
+        // console.log(eventosMarcados);
         
       } catch (error) {
   
@@ -58,21 +88,22 @@ const EventosAlunoPage = () => {
       
     }
   
-   else if (op === "2") {
+     else if (op === "2") {
       try { const retorno2 = await api.get(`${myEventsResource}/${userData.userId}`)
               setMyEvents(retorno2.data)
+             
+              console.log("vrebv2geu");
               console.log(retorno2.data);
-              
            
 
         } catch (error) {
           alert("erro na api listar minhas")}}
         
-  
+  else {
+    setOp("1")
+  }
     
-    } LoadEvent() }, [op]);
-  
-   
+    }
 
 
 
@@ -81,25 +112,68 @@ const EventosAlunoPage = () => {
   //   setOp(tpEvent);
   // }
 
-  async function loadMyComentary(idComentary) {
-    return "????";
+  async function GetCommentary(idComentary) {
+    alert("GetComentario")
+  }
+  async function PostCommentary(comentario, idEvent) {
+
+const postCommentary = await api.post(commentaryResource,{ 
+  descricao: comentario,
+  exibe: true,
+  idUsuario: userData.userId,
+  idEvento: idEvent
+})
+
+    alert("PostarComentario")
+  }
+  async function DeleteCommentary(idComentary) {
+    alert("DeletarComentario")
   }
 
   const showHideModal = () => {
     setShowModal(showModal ? false : true);
   };
 
-  const commentaryRemove = () => {
-    alert("Remover o comentário");
-  };
+  
 
-  function handleConnect() {
+  async function handleConnect(eventId, whatfunction, presencaId = null) {
+
+   
+      if (whatfunction === "connect") {
+        
+        try {const promise = await api.post(presencesEventResource, {situacao: true,
+          idUsuario: userData.userId,
+          idEvento:  eventId})
+
+          if (promise.status === 201) {
+            alert("presenca confirmada")
+          }
+
+          
+          
+        } catch (error) {
+          
+        }
+        return;
+      }
+     
+  //unconnect
+  try {
+    const unconnect = await api.delete(`${presencesEventResource}${presencaId}`)
     
+
+
+  } catch (error) {
+    alert("erro no unconnect")
+    
+  }
+    
+   
   }
   return (
     <>
   
-      
+   
 
       <MainContent>
         <Container>
@@ -113,6 +187,7 @@ const EventosAlunoPage = () => {
             manipulationFunction={(e) => setOp(e.target.value)} // aqui só a variável state
             defaultValue={op}
             addClass="select-tp-evento"
+            selectValue={"Selecione uma das opcoes"}
           />
 
           <Table
@@ -133,9 +208,12 @@ const EventosAlunoPage = () => {
 
       {showModal ? (
         <Modal
+        
           userId={userData.userId}
           showHideModal={showHideModal}
-          fnDelete={commentaryRemove}
+          fnGet={GetCommentary}
+          fnPost={PostCommentary}
+          fnDelete={DeleteCommentary}
         />
       ) : null}
     </>

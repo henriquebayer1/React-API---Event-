@@ -10,7 +10,7 @@ import { Tooltip } from "react-tooltip";
 // import trashDelete from "../../../assets/images/trash-delete.svg";
 import "./TableEvA.css";
 
-const TableEvA = ({ opcaoAPI, dados, dados2, fnConnect = null, fnShowModal = null }) => {
+const TableEvA = ({ opcaoAPI, dados, dados2, fnConnect = null, fnShowModal = null, idEventoC = null}) => {
   return (
     <table className="tbal-data">
       <thead className="tbal-data__head">
@@ -69,10 +69,10 @@ const TableEvA = ({ opcaoAPI, dados, dados2, fnConnect = null, fnShowModal = nul
                   idevento={e.idEvento}
                   src={comentaryIcon}
                   alt=""
-                  onClick={fnShowModal}
+                  onClick={() => {fnShowModal()}}
                 />
 
-                <Toggle manipulationFunction={fnConnect} />
+                <Toggle toggleActive={e.situacao} manipulationFunction={() => {fnConnect(e.idEvento, e.situacao ? "unconnect" : "connect", e.situacao ? e.idPresencaEvento : null)}} />
               </td>
             </tr>
           );
@@ -80,7 +80,7 @@ const TableEvA = ({ opcaoAPI, dados, dados2, fnConnect = null, fnShowModal = nul
         
         (<>{dados2.map((me) => {
           return (
-            <tr className="tbal-data__head-row" key={me.idEvento}>
+            <tr className="tbal-data__head-row" key={me.evento.idEvento}>
               <td className="tbal-data__data tbal-data__data--big">
                 {me.evento.nomeEvento}
               </td>
@@ -113,7 +113,7 @@ const TableEvA = ({ opcaoAPI, dados, dados2, fnConnect = null, fnShowModal = nul
                   onClick={fnShowModal}
                 />
 
-                <Toggle manipulationFunction={fnConnect} />
+                <Toggle toggleActive={me.situacao} manipulationFunction={() => {fnConnect(me.idEvento, me.situacao ? "unconnect" : "connect", me.situacao ? me.idPresencaEvento : null)}} />
               </td>
             </tr>
           );

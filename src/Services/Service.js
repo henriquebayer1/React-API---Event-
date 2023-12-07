@@ -8,6 +8,8 @@ export const typeEventResourceDelete = '/TiposEvento/'
 export const instituicaoResource = '/Instituicao/'
 export const loginResource = '/Login/'
 export const myEventsResource = '/PresencasEvento/ListarMinhas'
+export const presencesEventResource = '/PresencasEvento/'
+export const commentaryResource = '/ComentariosEvento/'
 
 
 
