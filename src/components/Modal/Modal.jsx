@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import trashDelete from "../../assets/images/trash-delete-red.png";
 
 import { ButtonForm, InputForm } from "../FormComponents/FormComponents";
@@ -7,7 +7,7 @@ import "./Modal.css";
 const Modal = ({
   modalTitle = "Feedback",
   comentaryText = "Não informado. Não informado. Não informado.",
-  userId = null,
+  IdEvento = null,
   showHideModal = false,
   fnDelete = null,
   fnPost = null,
@@ -21,6 +21,15 @@ const Modal = ({
   const [comentario, setComentario] = useState("")
   const [idEvento, setIdEvento] = useState("")
   
+useEffect(() => {
+
+
+LoadCommentary()
+}, [])
+
+async function LoadCommentary() {
+  fnGet()
+}
 
   return (
     <div className="modal">
@@ -37,7 +46,10 @@ const Modal = ({
             src={trashDelete}
             className="comentary__icon-delete"
             alt="Ícone de uma lixeira"
-            onClick={() => {fnDelete()}}
+            onClick={() => {
+              fnDelete()
+              
+            }}
           />
 
           <p className="comentary__text">{comentaryText}</p>
@@ -62,7 +74,7 @@ const Modal = ({
           buttonText="Comentar"
           className="comentary__button"
           textButton={"Postar Comentario"}
-          onClick={() => {fnPost(comentario, idEvento )}}
+          manipulationFunction={() => {fnPost(comentario, idEvento )}}
         />
       </article>
     </div>

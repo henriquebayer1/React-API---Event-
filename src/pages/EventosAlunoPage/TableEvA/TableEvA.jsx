@@ -69,7 +69,7 @@ const TableEvA = ({ opcaoAPI, dados, dados2, fnConnect = null, fnShowModal = nul
                   idevento={e.idEvento}
                   src={comentaryIcon}
                   alt=""
-                  onClick={() => {fnShowModal()}}
+                  onClick={() => {fnShowModal(); idEventoC(e.idEvento)}}
                 />
 
                 <Toggle toggleActive={e.situacao} manipulationFunction={() => {fnConnect(e.idEvento, e.situacao ? "unconnect" : "connect", e.situacao ? e.idPresencaEvento : null)}} />
@@ -110,7 +110,7 @@ const TableEvA = ({ opcaoAPI, dados, dados2, fnConnect = null, fnShowModal = nul
                   idevento={me.idEvento}
                   src={comentaryIcon}
                   alt=""
-                  onClick={fnShowModal}
+                  onClick={() => {fnShowModal(); idEventoC(me.idEvento)}}
                 />
 
                 <Toggle toggleActive={me.situacao} manipulationFunction={() => {fnConnect(me.idEvento, me.situacao ? "unconnect" : "connect", me.situacao ? me.idPresencaEvento : null)}} />

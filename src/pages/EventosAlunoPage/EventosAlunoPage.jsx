@@ -7,7 +7,7 @@ import Container from "../../components/Container/Container";
 import { SelectForm } from "../../components/FormComponents/FormComponents";
 import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
-import api, { commentaryResource, presencesEventResource } from "../../Services/Service";
+import api, { commentaryResource, commentaryResourceGetById, presencesEventResource } from "../../Services/Service";
 import setNotifyUser from "../../components/Notification/Notification"
 import {
     eventsResource,
@@ -43,6 +43,14 @@ const EventosAlunoPage = () => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  //ID DO EVENTO DA TABLE VINDO PARA USO NAS FUNCOES DE COMENTARIO NO CLICK IMG COMMENTARY
+  const [idEventoConnect, setIdEventoConnect] = useState("");
+
+  //State para view de comentario
+  const [commentary, setCommentary] = useState("");
+  //State para view de comentario
+  const [idComentario, setIdComentario] = useState("");
+
  
 
   const verificaPresenca = (arrAllEvents, eventsUser) => {
@@ -54,13 +62,22 @@ if (arrAllEvents[x].idEvento === eventsUser[i].evento.idEvento) {
     arrAllEvents[x].idPresencaEvento = eventsUser[i].idPresencaEvento
 
     break;
-}
-
-}
-
-    }
+}}}
 
 return arrAllEvents;
+};
+  const verificaIdEvento = (arrAllEvents, eventsUser) => {
+
+    for(let x = 0; x < arrAllEvents.length; x++){
+for(let i = 0; i < eventsUser.length; i++) {
+if (arrAllEvents[x].idEvento === eventsUser[i].evento.idEvento) {
+  arrAllEvents[x].idEvento = eventsUser[i].evento.idEvento
+    
+  return arrAllEvents[x].idEvento;
+    
+}}}
+
+
 };
  
   useEffect(() => { LoadEvent() }, [op, userData.userId]);
@@ -112,22 +129,46 @@ return arrAllEvents;
   //   setOp(tpEvent);
   // }
 
-  async function GetCommentary(idComentary) {
-    alert("GetComentario")
-  }
-  async function PostCommentary(comentario, idEvent) {
+  const GetCommentary = async () => {
 
-const postCommentary = await api.post(commentaryResource,{ 
-  descricao: comentario,
-  exibe: true,
-  idUsuario: userData.userId,
-  idEvento: idEvent
-})
 
-    alert("PostarComentario")
+    //ROTA DO PROPRIO SWAGGER POR CAUSA DO DUPLO ID REQUISITADO NA FUNCAO DA INTERFACE
+const promise = await api.get(`${commentaryResourceGetById}?idUsuario=${userData.userId}&idEvento=${idEventoConnect}`)
+setCommentary(promise.data.descricao)
+console.log(promise.data);
+setIdComentario(promise.data.idComentarioEvento)
+   
   }
-  async function DeleteCommentary(idComentary) {
-    alert("DeletarComentario")
+
+
+  async function PostCommentary(comentario) {
+
+    try {
+   
+      
+    
+      const postCommentary = await api.post(commentaryResource,{ 
+        descricao: comentario,
+        exibe: true,
+        idUsuario: userData.userId,
+        idEvento: idEventoConnect
+      })
+      
+    } catch (error) {
+
+   alert("erro na api eventos")
+    }
+
+
+
+    
+  }
+  async function DeleteCommentary() {
+const getCommentary = await api.get(commentaryResource)
+
+
+    const deleteCommentary = await api.delete(`${commentaryResource}${idComentario}`)
+    console.log(deleteCommentary.status);
   }
 
   const showHideModal = () => {
@@ -198,6 +239,7 @@ const postCommentary = await api.post(commentaryResource,{
             fnShowModal={() => {
               showHideModal();
             }}
+            idEventoC={setIdEventoConnect}
           />
           
         </Container>
@@ -208,12 +250,13 @@ const postCommentary = await api.post(commentaryResource,{
 
       {showModal ? (
         <Modal
-        
+          comentaryText={commentary}
           userId={userData.userId}
           showHideModal={showHideModal}
           fnGet={GetCommentary}
           fnPost={PostCommentary}
           fnDelete={DeleteCommentary}
+          
         />
       ) : null}
     </>
