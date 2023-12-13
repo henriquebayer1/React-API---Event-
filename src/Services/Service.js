@@ -16,7 +16,7 @@ export const commentaryResourceGetById = '/ComentariosEvento/BuscarPorIdUsuario'
 
 // // const apiPort = '7118';
 // const ApiUrl = `https://localhost:${apiPort}/api`;
-const externalApiUri = 'https://eventmanhahenriquebayer.azurewebsites.net/';
+const externalApiUri = 'eventmanhahenriquebayer.azurewebsites.net/';
 
 const api = axios.create({
 
