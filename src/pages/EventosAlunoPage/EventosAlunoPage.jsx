@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../../components/Header/Header";
+
 import MainContent from "../../components/MainContent/MainContent";
 import Title from "../../components/Title/Title";
 import Table from "./TableEvA/TableEvA";
@@ -7,7 +7,7 @@ import Container from "../../components/Container/Container";
 import { SelectForm } from "../../components/FormComponents/FormComponents";
 import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
-import api, { commentaryResource, commentaryResourceGetById, presencesEventResource } from "../../Services/Service";
+import api from "../../Services/Service";
 import setNotifyUser from "../../components/Notification/Notification"
 import {
     eventsResource,
@@ -15,7 +15,11 @@ import {
     nextEventsResource,
     typeEventResourceDelete,
     instituicaoResource,
-    myEventsResource
+    myEventsResource,
+    commentaryResource, 
+    commentaryResourceGetById,
+    presencesEventResource
+
   } from "../../Services/Service";
 import "./EventosAlunoPage.css";
 import { UserContext } from "../../Context/AuthContext";
@@ -66,19 +70,7 @@ if (arrAllEvents[x].idEvento === eventsUser[i].evento.idEvento) {
 
 return arrAllEvents;
 };
-  const verificaIdEvento = (arrAllEvents, eventsUser) => {
-
-    for(let x = 0; x < arrAllEvents.length; x++){
-for(let i = 0; i < eventsUser.length; i++) {
-if (arrAllEvents[x].idEvento === eventsUser[i].evento.idEvento) {
-  arrAllEvents[x].idEvento = eventsUser[i].evento.idEvento
-    
-  return arrAllEvents[x].idEvento;
-    
-}}}
-
-
-};
+  
  
   useEffect(() => { LoadEvent() }, [op, userData.userId]);
   
@@ -135,7 +127,7 @@ if (arrAllEvents[x].idEvento === eventsUser[i].evento.idEvento) {
     //ROTA DO PROPRIO SWAGGER POR CAUSA DO DUPLO ID REQUISITADO NA FUNCAO DA INTERFACE
 const promise = await api.get(`${commentaryResourceGetById}?idUsuario=${userData.userId}&idEvento=${idEventoConnect}`)
 setCommentary(promise.data.descricao)
-console.log(promise.data);
+
 setIdComentario(promise.data.idComentarioEvento)
    
   }

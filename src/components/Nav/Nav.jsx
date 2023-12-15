@@ -31,6 +31,7 @@ const Nav = ({ exibeNavbar, setExibeNavbar }) => {
                 {userData.role === "ADM" ? (<>
                     <Link  className='navbar__item' to="/tipo-eventos">Tipos de Evento</Link>
                     <Link  className='navbar__item' to="/eventos">Eventos ADM</Link>
+                
                     </>) 
                 
                     : 

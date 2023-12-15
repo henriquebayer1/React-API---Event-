@@ -29,7 +29,7 @@ const LoginPage = () => {
     //const vinda do context para uso global 
     const {userData, setUserData} = useContext(UserContext)
 
-    const [user, setUser] = useState({email: "henrique@gmail.com", senha: "12345"});
+    const [user, setUser] = useState({email: "henrique@gmail.com", senha: "123456"});
 
 
 
