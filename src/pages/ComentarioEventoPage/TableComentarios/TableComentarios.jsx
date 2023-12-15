@@ -106,9 +106,9 @@ const TableComentarios = ({ opcaoAPI, dados, dados2, fnConnect = null, fnShowMod
               </td> */}
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
                 {/* {e.dataEvento} */}
-              
+                {mc.usuario.nome}
               </td>
-
+              
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
                 <img
                   className="tbal-data__icon"

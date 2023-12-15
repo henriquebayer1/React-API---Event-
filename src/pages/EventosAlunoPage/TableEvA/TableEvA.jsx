@@ -60,7 +60,7 @@ const TableEvA = ({ opcaoAPI, dados, dados2, fnConnect = null, fnShowModal = nul
               </td> */}
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
                 {/* {e.dataEvento} */}
-                {e.dataEvento}
+                {dateFormatDbToView(e.dataEvento)}
               </td>
 
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
@@ -101,7 +101,7 @@ const TableEvA = ({ opcaoAPI, dados, dados2, fnConnect = null, fnShowModal = nul
               </td> */}
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
                 {/* {e.dataEvento} */}
-                {me.dataEvento}
+                {dateFormatDbToView(me.dataEvento)}
               </td>
 
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
